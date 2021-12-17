@@ -57,14 +57,14 @@ public class Application implements CommandLineRunner {
 		clienteService.insertNewCliente(cliente3);
 		System.out.println("Se ha insertado el Cliente3");
 		
-		/*Consultamos los Clientes
+		//Consultamos los Clientes
 		List<Cliente> clientes = clienteService.findAllClient();
 		
 		System.out.println("Se han insertado los Clientes:");
 		
 		for(Cliente cliente: clientes) {
 			System.out.println("Cliente " + cliente.toString());
-		}*/
+		}
 		
 		//Buscamos un cliente por Id
 		Cliente searchCliente = clienteService.searchClienteById(3L);
@@ -80,9 +80,9 @@ public class Application implements CommandLineRunner {
 		clienteService.actualizaCliente(searchCliente);
 		System.out.println("Se ha modificado el Cliente 3.");
 		
-		/*
+		
 		//Buscamos un cliente por Nombre
-		List<Cliente> clientes = clienteService.searchClienteByNombre("Cliente3", "Apellido3", "Apellidos3");
+		clientes = clienteService.searchClienteByNombre("Cliente3", "Apellido3", "Apellidos3");
 		
 		for (Cliente cli: clientes)
 		System.out.println("Cliente " + cli.toString());
@@ -92,21 +92,17 @@ public class Application implements CommandLineRunner {
 			System.out.println("El cliente encontrado es " + searchCliente.getNombre());
 		} else {
 			System.out.println("No se ha encontrado el Cliente3");
-		}*/
+		}
 		
-		
-		/*
 		//Elimino el último cliente que inserté
 		clienteService.eliminarCliente(searchCliente);
-		System.out.println("Se ha eliminado el Cliente3");
-		*/
+		System.out.println("Se ha eliminado el Cliente3");		
 		
-		/*
 		//Consultamos los Clientes
-		List<Cliente> clientes = clienteService.findAllClient();
+		clientes = clienteService.findAllClient();
 				
 		for(Cliente cliente: clientes) {
 			System.out.println("Cliente " + cliente.toString());
-		}*/
+		}
 	}
 }

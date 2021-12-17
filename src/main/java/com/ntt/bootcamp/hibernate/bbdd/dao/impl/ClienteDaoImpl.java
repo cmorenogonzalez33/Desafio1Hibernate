@@ -6,7 +6,6 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -50,15 +49,18 @@ public class ClienteDaoImpl implements ClienteDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Override
 	@Transactional
+	@Override
 	public List<Cliente> getClientes(){
 		//Obtenemos la sesión
 		Session currentSession = entityManager.unwrap(Session.class);
 		
 		//Buscamos en bbdd
-		List<Cliente> clientes = (List<Cliente>) currentSession.createQuery("FROM Cliente").list();	
+		List<Cliente> clientes = currentSession.createQuery("FROM Cliente").list();	
+		
+		//Cierro la sesión
 		currentSession.close();
+		
 		return clientes;
 	}
 	
@@ -81,10 +83,8 @@ public class ClienteDaoImpl implements ClienteDao {
 		//Obtenemos la sesión
 		Session currentSession = entityManager.unwrap(Session.class);
 		
-		Cliente cli = (Cliente) currentSession.load(Session.class, cliente.getId());
-		
 		//Elimino en bbdd
-		currentSession.delete(cli);
+		entityManager.remove(entityManager.merge(cliente));
 		
 		//Cierro la sesión
 		currentSession.close();
@@ -98,16 +98,12 @@ public class ClienteDaoImpl implements ClienteDao {
 		//Obtenemos la sesión
 		Session currentSession = entityManager.unwrap(Session.class);
 		
-		Query query = currentSession.createQuery("SELECT p FROM clientes p WHERE nombre=? AND primerApellido=? AND segundoApellido=?");
-		query.setString(0, name);
-		query.setString(1, apellido1);
-		query.setString(2, apellido2);
-						
-		//Buscamos en bbdd
-		List<Cliente> clientes = query.list();
+		final List<Cliente> clientes = currentSession
+				.createQuery("FROM Cliente WHERE nombre='" + name + "' AND primerApellido='" + apellido1 + "' AND segundoApellido='" + apellido2 + "'").list();
 				
 		//Cerramos la sesión
 		currentSession.close();
+		
 		return clientes;
 	}
 }
